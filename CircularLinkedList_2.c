@@ -177,23 +177,23 @@ int main(void)
 	int i;
 	
 	em = (Person*)malloc(sizeof(Person));
-	strcpy(em->name, "ÃÖ½ÂÇå");
-	em->num = 990511;
+	strcpy(em->name, "ÃÖ");
+	em->num = 1111;
 	LInsert(&list, em); 
 	
 	em = (Person*)malloc(sizeof(Person));
-	strcpy(em->name, "À¯Èñ¼ö");
-	em->num = 991025;
+	strcpy(em->name, "À¯");
+	em->num = 2222;
 	LInsert(&list, em);
 	
 	em = (Person*)malloc(sizeof(Person));
-	strcpy(em->name, "±èÀçÇö");
-	em->num = 990330;
+	strcpy(em->name, "±è");
+	em->num = 3535;
 	LInsert(&list, em); 
 	
 	em = (Person*)malloc(sizeof(Person));
-	strcpy(em->name, "¹è°­È¯");
-	em->num = 990107;
+	strcpy(em->name, "¹è");
+	em->num = 4454;
 	LInsert(&list, em); 
 	
 	if(LFirst(&list, &em))
@@ -209,7 +209,7 @@ int main(void)
 		}
 	}
 	
-	em = WhoisDangjik(&list, "¹è°­È¯", 7);
+	em = WhoisDangjik(&list, "¹è", 7);
 	printf("%s \n", em->name); 
 
 	return 0;
