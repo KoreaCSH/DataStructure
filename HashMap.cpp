@@ -100,7 +100,32 @@ public:
 	
 	bool remove(const KeyType k)
 	{
-		
+		int hash_val = hashfunction(k);
+		HashMapElemType* cursor = find(k);
+		HashMapElemType* prev = ht[hash_val];
+		if ( cursor == NULL )
+		{
+			return false;
+		}
+		else
+		{
+			if ( ht[hash_val] == cursor )
+			{
+				delete cursor;
+				ht[hash_val] = NULL;
+				return true;
+			}
+			else
+			{
+				while ( prev->link != cursor )
+				{
+					prev = prev->link;
+				}
+				prev->link = cursor->link;
+				delete cursor;
+				return true;
+			}
+		}
 	}
 	
 	void print()
