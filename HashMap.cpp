@@ -95,6 +95,7 @@ public:
 			newNode->val = v;
 			newNode->link = ht[hash_val];
 			ht[hash_val] = newNode;
+			mapsize++;
 		}
 	}
 	
@@ -111,8 +112,8 @@ public:
 		{
 			if ( ht[hash_val] == cursor )
 			{
+				ht[hash_val] = cursor->link;
 				delete cursor;
-				ht[hash_val] = NULL;
 				return true;
 			}
 			else
