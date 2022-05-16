@@ -1,5 +1,4 @@
 #include<iostream>
-#include<algorithm>
 #include<string>
 
 using namespace std;
@@ -131,7 +130,41 @@ public:
 	
 	void print()
 	{
+		// print by desc order using val
+		HashMapElemType* cursor;
+		HashMapElemType** sortedElem = new HashMapElemType* [this->mapsize];
+		int j = 0;
+		for ( int i = 0 ; i < this->capacity; i++ )
+		{
+			if ( ht[i] != NULL )
+			{
+				cursor = ht[i];
+				sortedElem[j++] = cursor;
+				cursor = cursor->link;
+				while ( cursor != NULL )
+				{
+					sortedElem[j++] = cursor;
+					cursor = cursor->link;
+				}
+			}
+		}
 		
+		for ( int i = 1; i < this->mapsize; i++ )
+		{
+			int j = i;
+			while ( j >= 1 && sortedElem[j] > sortedElem[j-1] )
+			{
+				HashMapElemType* temp = sortedElem[j];
+				sortedElem[j] = sortedElem[j-1];
+				sortedElem[j-1] = temp;
+				j--;
+			}
+		}
+		
+		for ( int i = 0 ; i < this->mapsize ; i++ )
+		{
+			cout << sortedElem[i]->key << ":" << sortedElem[i]->val << endl;
+		}
 	}
 
 private:
@@ -139,19 +172,14 @@ private:
 	{
 		int hash_val = -1;
 		int temp = 0;
-		string data = k;
-		transform(data.begin(), data.end(), data.begin(), ::tolower);
-		const char *ps = data.c_str();
+		const char *ps = k.c_str();
 		
 		while ( *ps )
 		{
-			if ( *ps >= 97 && *ps <= 122 )
+			temp += *ps++;
+			if ( *ps )
 			{
-				temp += *ps++;
-				if ( *ps )
-				{
-					temp += ((int)*ps++) << 8;
-				}
+				temp += ((int)*ps++) << 8;
 			}
 		}
 		hash_val = temp % divisor;
