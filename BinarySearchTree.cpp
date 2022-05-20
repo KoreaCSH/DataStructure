@@ -27,7 +27,7 @@ public:
 	
 	~BinarySearchTree()
 	{
-		
+		this->removeall(this->root);
 	}
 	
 	bool search(T _key)
@@ -91,8 +91,7 @@ public:
 	
 	void remove(T _key)
 	{
-		
-		
+		removeNode(root, _key);
 	}
 	
 	void display()
@@ -114,7 +113,7 @@ private:
 		}
 	}
 	
-	Node<T>* searchMinNode(Node<T>* cursor)
+	Node<T>* searchMaxNode(Node<T>* cursor)
 	{
 		if ( cursor == NULL )
 		{
@@ -128,10 +127,75 @@ private:
 		return cursor;
 	}
 	
+	void removeall(Node<T>* cursor)
+	{
+		while ( cursor != NULL )
+		{
+			removeall(cursor->left);
+			removeall(cursor->right);
+			delete cursor;
+		}
+	}
+	
+	Node<T>* removeNode(Node<T>* node, T _key)
+	{
+		if ( node == NULL )
+		{
+			return node;
+		}
+		else if ( node->key > _key )
+		{
+			node->left = removeNode(node->left, _key);
+		}
+		else if ( node->key < _key )
+		{
+			node->right = removeNode(node->right, _key);
+		}
+		else
+		{
+			Node<T>* cursor = node;
+			if ( node->left == NULL && node->right == NULL )
+			{
+				delete cursor;
+				node = NULL;
+			}
+			else if ( node->right == NULL )
+			{
+				node = node->left;
+				delete cursor;
+			}
+			else if ( node->left == NULL )
+			{
+				node = node->right;
+				delete cursor;
+			}
+			else
+			{
+				cursor = searchMaxNode(node->left);
+				node->key = cursor->key;
+				node->left = removeNode(node->left, _key);
+			}
+		}
+		
+		return node;
+	}
+	
 };
 
 int main(void)
 {
+	BinarySearchTree<int>* bst = new BinarySearchTree<int> ();
 	
+	bst->insert(3);
+	bst->insert(6);
+	bst->insert(7);
+	bst->insert(8);
+	bst->insert(11);
+	bst->insert(9);
+	bst->insert(5);
+	bst->insert(4);
 	
+	bst->display();
+	
+	return 0;
 }
