@@ -91,12 +91,19 @@ public:
 	
 	void remove(T _key)
 	{
-		removeNode(root, _key);
+		Node<T>* ptr = root;
+		removeNode(ptr, _key);
 	}
 	
 	void display()
 	{
-		this->inorder();
+		this->inorder(this->root);
+	}
+	
+	void searchMax()
+	{
+		Node<T>* temp = searchMaxNode(root);
+		cout << temp->key << endl;
 	}
 	
 private:
@@ -153,27 +160,50 @@ private:
 		}
 		else
 		{
-			Node<T>* cursor = node;
+			Node<T>* cursor;
 			if ( node->left == NULL && node->right == NULL )
 			{
-				delete cursor;
+				delete node;
 				node = NULL;
 			}
-			else if ( node->right == NULL )
+			else if ( node->left != NULL && node->right == NULL )
 			{
+				if ( node == this->root )
+				{
+					cursor = this->root;
+					this->root = this->root->left;
+					delete cursor;
+					return this->root;
+				}
+				cursor = node;
 				node = node->left;
 				delete cursor;
 			}
-			else if ( node->left == NULL )
+			else if ( node->left == NULL && node->right != NULL )
 			{
+				if ( node == this->root )
+				{
+					cursor = this->root;
+					this->root = this->root->right;
+					delete cursor;
+					return this->root;
+				}
+				cursor = node;
 				node = node->right;
 				delete cursor;
 			}
 			else
 			{
+				if ( node == root )
+				{
+					cursor = searchMaxNode(node->left);
+					this->root->key = cursor->key;
+					this->root->left = removeNode(node->left, cursor->key);
+					return this->root;
+				}
 				cursor = searchMaxNode(node->left);
 				node->key = cursor->key;
-				node->left = removeNode(node->left, _key);
+				node->left = removeNode(node->left, cursor->key);
 			}
 		}
 		
@@ -186,16 +216,24 @@ int main(void)
 {
 	BinarySearchTree<int>* bst = new BinarySearchTree<int> ();
 	
-	bst->insert(3);
-	bst->insert(6);
-	bst->insert(7);
-	bst->insert(8);
-	bst->insert(11);
-	bst->insert(9);
 	bst->insert(5);
+	bst->insert(3);
+	bst->insert(7);
+	bst->insert(2);
 	bst->insert(4);
+	bst->insert(6);
+	bst->insert(8);
+	
+	bst->display();
+	
+	bst->search(4);
+	bst->search(9);
+	
+	bst->remove(5);
+	bst->remove(4);
 	
 	bst->display();
 	
 	return 0;
+	
 }
